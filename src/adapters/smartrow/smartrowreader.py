@@ -76,6 +76,8 @@ class SmartRow(gatt.Device):
     def characteristic_value_updated(self, characteristic, value):
         super().characteristic_value_updated(characteristic, value)
         self.buffer = value.decode()
+        value_logger = getLogger("charValue")
+        value_logger.debug(self.buffer)
         self.notify_callbacks(self.buffer)
 
 
