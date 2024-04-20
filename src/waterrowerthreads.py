@@ -23,7 +23,6 @@ python3 waterrowerthreads.py -i s4 -b -a
 
 import water_logger
 from water_logger import getLogger
-import logging
 
 import threading
 import argparse
@@ -66,12 +65,12 @@ def main(args=None):
 
 
     def Waterrower(in_q, ble_out_q, ant_out_q):
-        logger.info("Waterrower Interface started")
+        logger.info("Interface Waterrower started!")
         Waterrowerserial = wrtobleant.main(in_q, ble_out_q, ant_out_q)
         Waterrowerserial()
 
     def Smartrow(in_q, ble_out_q, ant_out_q, pass_thru_q, fake_sr_event):
-        logger.info("Smartrow Interface started")
+        logger.info("Interface Smartrow started!")
         Smartrowconnection = smartrowtobleant.main(in_q, ble_out_q, ant_out_q, pass_thru_q, fake_sr_event)
         Smartrowconnection()
 
@@ -106,7 +105,7 @@ def main(args=None):
         passthru = True
 
     if args.interface == "s4":
-        logger.info("inferface S4 monitor will be used for data input")
+        logger.info("Inferface S4 monitor will be used for data input")
         t = threading.Thread(target=Waterrower, args=(q, ble_q, ant_q))
         t.daemon = True
         t.start()
@@ -115,7 +114,7 @@ def main(args=None):
         logger.info("S4 not selected")
 
     if args.interface == "sr":    
-        logger.info("interface smartrow will be used for data input")
+        logger.info("Interface Smartrow will be used for data input")
         t = threading.Thread(target=Smartrow, args=(q, ble_q, ant_q, passthru_q, fake_sr_event))
         t.daemon = True
         t.start()
