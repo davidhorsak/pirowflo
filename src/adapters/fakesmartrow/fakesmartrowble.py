@@ -5,7 +5,10 @@
 # https://github.com/PunchThrough/espresso-ble
 # ---------------------------------------------------------------------------
 #
-import logging
+import water_logger
+from water_logger import getLogger
+logger = getLogger(__name__)
+
 from operator import truediv
 import signal
 import threading
@@ -462,6 +465,7 @@ def main(out_q, ble_in_q, fake_sr_event):
     mainloop = MainLoop()
 
     agent_manager = dbus.Interface(obj, "org.bluez.AgentManager1")
+    logger.debug('Registering agent')
     agent_manager.RegisterAgent(AGENT_PATH, "NoInputNoOutput")
 
     ad_manager.RegisterAdvertisement(
