@@ -1,3 +1,4 @@
-src/pirowflo.log
+logs/*.log
+config/*.conf
 *.pyc
-src/logging.conf
+
