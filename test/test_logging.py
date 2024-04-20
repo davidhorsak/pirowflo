@@ -7,7 +7,7 @@ from env import ROOT_DIR
 from water_logger import getLogger
 
 
-def get_list_line(file_path):
+def get_first_line(file_path):
     with open(file_path, "rb") as file:
         try:
             file.seek(-2, 2)
@@ -27,7 +27,7 @@ def test_answer():
     logger.debug(unique_string)
 
     log_path = os.path.join(ROOT_DIR, 'logs/app.log')
-    last_line = get_list_line(log_path)
+    last_line = get_first_line(log_path)
 
     test_string = 'test - DEBUG - ' + str(unique_string) 
     
