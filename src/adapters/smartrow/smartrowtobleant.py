@@ -134,6 +134,9 @@ class DataLogger():
 
     def on_row_event(self, event):
         global sr_passthrough_q
+        
+        event_logger = getLogger('row_event')
+        event_logger.debug(event)
 
         #pretty=event.replace('\r', '')
         #print('-->' + str(pretty))
