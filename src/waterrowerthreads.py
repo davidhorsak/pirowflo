@@ -22,6 +22,7 @@ python3 waterrowerthreads.py -i s4 -b -a
 """
 
 import water_logger
+import logging
 
 import threading
 import argparse
@@ -55,7 +56,6 @@ class Graceful:
         Mainlock.release()
 
 def main(args=None):
-    logging.config.fileConfig(loggerconfigpath, disable_existing_loggers=False)
     grace = Graceful()
 
     def BleService(out_q, ble_in_q):
