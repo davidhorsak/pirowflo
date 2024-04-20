@@ -21,10 +21,11 @@ e.g. use the S4 connected via USB and broadcast data over bluetooth and Ant+
 python3 waterrowerthreads.py -i s4 -b -a
 """
 
-import logging
-import logging.config
+import water_logger
+
 import threading
 import argparse
+
 from queue import Queue
 from collections import deque
 
@@ -36,8 +37,6 @@ from adapters.fakesmartrow import fakesmartrowble
 
 import pathlib
 import signal
-
-loggerconfigpath = str(pathlib.Path(__file__).parent.absolute()) +'/' +'logging.conf'
 
 logger = logging.getLogger(__name__)
 Mainlock = threading.Lock()
