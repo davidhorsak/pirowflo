@@ -1,5 +1,7 @@
+import water_logger
+from water_logger import getLogger
+
 import gatt
-import logging
 import subprocess
 import threading
 from time import sleep
@@ -104,7 +106,7 @@ class SmartRowManager(gatt.DeviceManager):
         
     def device_discovered(self, device):
         if device.alias() == "SmartRow":
-            logging.info("found SmartRow")
+            logging.info("Found SmartRow")
             logging.info(device.mac_address)
             self.smartrowmac = device.mac_address
             self.stop()
@@ -118,12 +120,12 @@ def connecttosmartrow(passthru = False):
     else:
         manager = SmartRowManager(adapter_name=get_sr_preferred_adapter())
 
-    logger.info("starting discovery")
+    logger.info("Starting discovery")
     manager.start_discovery()  # from the DeviceManager class call the methode start_discorvery
     manager.run()
     while not manager.ready(): # hold the thread locked a checks if SmartRow has been found. Then gives other process 0.2 sec time to work
         time.sleep(0.2)
-    logger.info("found SmartRow macaddress")
+    logger.info("Found SmartRow macaddress")
     macaddresssmartrower = manager.smartrowmac    
     return macaddresssmartrower
 
