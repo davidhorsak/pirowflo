@@ -58,8 +58,6 @@ LE_ADVERTISEMENT_IFACE = "org.bluez.LEAdvertisement1"
 BLUEZ_SERVICE_NAME = "org.bluez"
 GATT_MANAGER_IFACE = "org.bluez.GattManager1"
 
-logger = logging.getLogger(__name__)
-
 mainloop = None
 AppConnectState = None
 AppKeylockReceiveCount = 0
