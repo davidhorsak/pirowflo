@@ -1,4 +1,6 @@
-import logging
+import water_logger
+from water_logger import getLogger
+
 import struct
 
 import gatt
@@ -9,7 +11,7 @@ from copy import deepcopy
 
 from . import smartrowreader
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 sr_passthrough_q = None
 
 class DataLogger():
@@ -88,7 +90,7 @@ class DataLogger():
             cksum=f'{(sum(ord(ch) for ch in key)):0>4X}'
 
             if cksum[-2:] == checksum:
-                print("Checksum GOOD")
+                logger.info("Checksum GOOD")
                 a=(int(keylock[11:15],16) * 17923) // 256
                 result=f'{a:0>6x}'[2:]
                 
@@ -97,13 +99,13 @@ class DataLogger():
                     response.append(ord(c))
                 response.append(0x0d)
                 
-                print(response)
+                logger.info(response)
                 return response
             else:
-                print("Checksum BAD")
+                logger.info("Checksum BAD")
 
         except Exception as e:
-            print(e)
+            logger.error(e)
 
         # return 0x23 on failure
         return [0x23]
@@ -126,8 +128,8 @@ class DataLogger():
             return r
 
         except Exception as e:
-            print(e)
-            print(event)
+            logger.error(e)
+            logger.error(event)
             return event
 
     def on_row_event(self, event):
@@ -146,8 +148,8 @@ class DataLogger():
                 key = self.calculate_challenge_response(event)
                 self.send_challenge_response(key)
             except Exception as e:
-                print("Exception in KEYLOCK event!")
-                print(str(e))
+                logger.error("Exception in KEYLOCK event!")
+                logger.error(str(e))
 
         # Un-obfuscate SmartRow V3 distance data
         if self.SmartRowV3 is True:
@@ -232,8 +234,8 @@ class DataLogger():
                 self._rower_interface.characteristic_write_value(struct.pack("<b", 0x23))
 
         except Exception as e:
-            print(e)
-            print(event)
+            logger.error(e)
+            logger.error(event)
 
         #print(self.WRValues)
 
@@ -283,7 +285,7 @@ def main(in_q, ble_out_q, ant_out_q, passtrhu_q = None, fake_sr_event = None):
 
     logger.info("SmartRow Ready and sending data to BLE and ANT Thread")
 
-    print("starting heart beat")
+    logger.info("Starting heartbeat")
     HB = threading.Thread(target=heartbeat, args=([smartrow]))
     HB.daemon = True
     HB.start()
@@ -300,7 +302,7 @@ def main(in_q, ble_out_q, ant_out_q, passtrhu_q = None, fake_sr_event = None):
     while True:
         if not in_q.empty():
             ResetRequest_ble = in_q.get()
-            print(ResetRequest_ble)
+            logger.info(ResetRequest_ble)
             reset(smartrow)
         else:
             pass
