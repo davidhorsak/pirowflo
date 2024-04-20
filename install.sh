@@ -169,7 +169,7 @@ echo "----------------------------------------------"
 
 rm -f logs/app.log
 cp config/samples/logging.conf config/logging.conf
-sed -i 's@#REPO_DIR#@'"$repo_dir"'@g' src/logging.conf
+sed -i 's@#REPO_DIR#@'"$repo_dir"'@g' config/logging.conf
 
 echo " "
 echo "----------------------------------------------"
