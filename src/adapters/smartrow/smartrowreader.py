@@ -6,7 +6,7 @@ import subprocess
 import threading
 from time import sleep
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 #This SDK requires you to create subclasses of gatt.DeviceManager and gatt.Device. The other two classes gatt.Service and gatt.Characteristic are not supposed to be subclassed.
 
@@ -106,8 +106,8 @@ class SmartRowManager(gatt.DeviceManager):
         
     def device_discovered(self, device):
         if device.alias() == "SmartRow":
-            logging.info("Found SmartRow")
-            logging.info(device.mac_address)
+            logger.info("Found SmartRow")
+            logger.info(device.mac_address)
             self.smartrowmac = device.mac_address
             self.stop()
             with self.lock: #"Lock Acquired"
