@@ -22,6 +22,7 @@ python3 waterrowerthreads.py -i s4 -b -a
 """
 
 import water_logger
+from water_logger import getLogger
 import logging
 
 import threading
@@ -39,7 +40,7 @@ from adapters.fakesmartrow import fakesmartrowble
 import pathlib
 import signal
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 Mainlock = threading.Lock()
 
 class Graceful:
