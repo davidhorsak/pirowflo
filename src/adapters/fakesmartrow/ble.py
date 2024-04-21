@@ -1,6 +1,9 @@
+import water_logger
+from water_logger import getLogger
+logger = getLogger(__name__)
+
 import dbus
 import subprocess
-import logging
 
 
 DBUS_OM_IFACE = "org.freedesktop.DBus.ObjectManager"
@@ -15,9 +18,6 @@ LE_ADVERTISEMENT_IFACE = "org.bluez.LEAdvertisement1"
 
 BLUEZ_SERVICE_NAME = "org.bluez"
 GATT_MANAGER_IFACE = "org.bluez.GattManager1"
-
-
-logger = logging.getLogger(__name__)
 
 class InvalidArgsException(dbus.exceptions.DBusException):
     _dbus_error_name = "org.freedesktop.DBus.Error.InvalidArgs"
