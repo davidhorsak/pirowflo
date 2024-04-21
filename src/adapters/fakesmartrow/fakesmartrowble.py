@@ -478,6 +478,8 @@ def main(out_q, ble_in_q, fake_sr_event):
     agent = Agent(bus, AGENT_PATH)
 
     app = Application(bus)
+    
+    logger.info("Adding SmartRow service")
     app.add_service(SmartRow(bus, 0))
 
     mainloop = MainLoop()
