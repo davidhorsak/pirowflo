@@ -204,6 +204,9 @@ class SmartRowData(Characteristic):
             smartRowFakeData = '\r'
             AppConnectState = AppConnectStateEnum.Connected
             logger.info("Connect state=4: Connected")
+        else:
+            logger.debug("AppConnectState: " + str(AppConnectState))
+        
 
         if (smartRowFakeData is not None): 
             value = [dbus.Byte(ord(b)) for b in smartRowFakeData]
