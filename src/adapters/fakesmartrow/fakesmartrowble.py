@@ -9,6 +9,8 @@ import water_logger
 from water_logger import getLogger
 logger = getLogger(__name__)
 
+from data_loop import DataLoop
+
 from operator import truediv
 import signal
 import threading
@@ -68,6 +70,7 @@ StrokeOffset = 0
 CurrentStrokes = 0
 StartTime = None
 PendingReset = False
+dl_queue = DataLoop()
 
 class AppConnectStateEnum(Enum):
     Start=1
@@ -164,6 +167,7 @@ class SmartRowData(Characteristic):
 
         if (AppConnectState == AppConnectStateEnum.Connected):
             logger.debug("AppConnectState: Connected")
+            
             if (len(ble_command_q) > 0):
                 #print('Command queue length='+str(len(ble_command_q)))
                 smartRowFakeData = ble_command_q.popleft()
@@ -215,6 +219,12 @@ class SmartRowData(Characteristic):
             
         else:
             logger.warning("No data from SmartRow interface")
+            logger.debug("Sending loop data")
+            
+            smartRowFakeData = dl_queue.popleft()
+            value = [dbus.Byte(ord(b)) for b in smartRowFakeData]
+            logger.debug('Sending: '+str(smartRowFakeData).replace('\r', '\\r'))
+            self.PropertiesChanged(GATT_CHRC_IFACE, { 'Value': value }, [])
             pass
 
         return self.notifying
@@ -436,7 +446,7 @@ def main(out_q, ble_in_q, fake_sr_event):
     AppConnectState = AppConnectStateEnum.Start
 
     logger.info('Waiting for real SmartRow to connect')
-#    fake_sr_event.wait()
+#    fake_sr_event.wait() REMOVE
     logger.info('Real SmartRow connected')
 
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
