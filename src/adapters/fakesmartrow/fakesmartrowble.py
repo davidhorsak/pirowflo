@@ -112,6 +112,7 @@ class SmartRow(Service):
     SMART_ROW_SERVICE_UUID = '1234'
 
     def __init__(self, bus, index):
+        logger.debug("SmartRow/Service characteristic initializing")
         Service.__init__(self, bus, index, self.SMART_ROW_SERVICE_UUID, True)
         self.add_characteristic(WriteToSmartRow(bus,0,self))
         self.add_characteristic(SmartRowData(bus, 1, self))
@@ -120,6 +121,7 @@ class WriteToSmartRow(Characteristic):
     WRITE_TO_SMARTROW_UUID = '1235'
 
     def __init__(self, bus, index, service):
+        logger.debug("SmartRow/Write characteristic initializing")
         Characteristic.__init__(
             self, bus, index,
             self.WRITE_TO_SMARTROW_UUID,
@@ -130,17 +132,18 @@ class WriteToSmartRow(Characteristic):
     def WriteValue(self, value, options):
         self.value = value
         sval = ''.join([str(v) for v in value])
-        #print('WriteValue(1235): ' + sval)
+        logger.debug("SmartRow/Write writing: " + sval)
         ManageConnection(sval)
 
     def ReadValue(self, options):
-        #print('ReadValue(1235): '+str(options))
+        logger.debug("SmartRow/Write reading: " + +str(options))
         pass
 
 class SmartRowData(Characteristic):
     SMARTROW_DATA_UUID = '1236'
 
     def __init__(self, bus, index, service):
+        logger.debug("SmartRow/Data characteristic initializing")
         Characteristic.__init__(
             self, bus, index,
             self.SMARTROW_DATA_UUID,
@@ -201,18 +204,18 @@ class SmartRowData(Characteristic):
 
         if (smartRowFakeData is not None): 
             value = [dbus.Byte(ord(b)) for b in smartRowFakeData]
-            #logger.info('Sending: '+str(smartRowFakeData).replace('\r', '\\r'))
+            logger.debug('Sending: '+str(smartRowFakeData).replace('\r', '\\r'))
             self.PropertiesChanged(GATT_CHRC_IFACE, { 'Value': value }, [])
             
         else:
-            #logger.warning("no data from SmartRow interface")
+            logger.warning("No data from SmartRow interface")
             pass
 
         return self.notifying
 
     def _update_Waterrower_cb_value(self):
-        #print('Update Smartrow Data ' + self.notifying)
-
+        logger.debug("Update Smartrow data " + self.notifying)
+        
         if not self.notifying:
             return
 
@@ -250,6 +253,7 @@ class SmartRowData(Characteristic):
         #print('WriteValue(1236): '+str(options))
 
 class SmartRowAdvertisement(Advertisement):
+    logger.debug("SmartRow/Advertisement characteristic initializing")
     def __init__(self, bus, index):
         Advertisement.__init__(self, bus, index, "peripheral")
         self.add_manufacturer_data(
