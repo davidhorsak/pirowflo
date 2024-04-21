@@ -99,8 +99,9 @@ def main(args=None):
     passthru = False
 
     # Turn on SmartRow passthrough if the interface is
-    #  SmartRow and BLE-FE is not selected
-    if args.interface == 'sr' and args.blue == False:
+    # SmartRow and BLE-FE is not selected
+    if (args.interface == 'sr' and args.blue == False) or args.pass == True:
+        logger.info("Passthrough Smartrow ON")
         fake_sr_event = threading.Event()
         passthru_q = deque(maxlen=1)
         passthru = True
@@ -163,6 +164,7 @@ if __name__ == '__main__':
         parser.add_argument("-i", "--interface", choices=["s4","sr"], default="s4", help="choose  Waterrower interface S4 monitor: s4 or Smartrow: sr")
         parser.add_argument("-b", "--blue", action='store_true', default=False,help="Broadcast Waterrower data over bluetooth low energy")
         parser.add_argument("-a", "--antfe", action='store_true', default=False,help="Broadcast Waterrower data over Ant+")
+        parser.add_argument("-p", "--pass", action='store_true', default=False,help="Passthrough with fake data")
         args = parser.parse_args()
         logger.info(args)
         main(args)
