@@ -195,8 +195,9 @@ class SmartRowData(Characteristic):
                         if PendingReset:
                             smartRowFakeData = '\rV@\r' + smartRowFakeData
                             PendingReset = False
-                except:
+                except Exception as e:
                     logger.warn('Exception when processing ble_in_q_value')
+                    logger.warn(e)
                     smartRowFakeData = None
 
         elif (AppConnectState == AppConnectState.WaitKeylockResponse and len(ble_command_q) > 0):
