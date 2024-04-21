@@ -163,6 +163,7 @@ class SmartRowData(Characteristic):
         value = dbus.Byte(0)
 
         if (AppConnectState == AppConnectStateEnum.Connected):
+            logger.debug("AppConnectState: Connected")
             if (len(ble_command_q) > 0):
                 #print('Command queue length='+str(len(ble_command_q)))
                 smartRowFakeData = ble_command_q.popleft()
@@ -195,9 +196,11 @@ class SmartRowData(Characteristic):
                     smartRowFakeData = None
 
         elif (AppConnectState == AppConnectState.WaitKeylockResponse and len(ble_command_q) > 0):
+            logger.debug("AppConnectState: WaitKeyLockResponse")
             smartRowFakeData = ble_command_q.popleft()
 
         elif (AppConnectState == AppConnectState.ReceivedKeylockResponse):
+            logger.debug("AppConnectState: ReceivedKeylockResponse")
             smartRowFakeData = '\r'
             AppConnectState = AppConnectStateEnum.Connected
             logger.info("Connect state=4: Connected")
