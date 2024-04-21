@@ -426,7 +426,7 @@ def main(out_q, ble_in_q, fake_sr_event):
     AppConnectState = AppConnectStateEnum.Start
 
     logger.info('Waiting for real SmartRow to connect')
-    fake_sr_event.wait()
+#    fake_sr_event.wait()
     logger.info('Real SmartRow connected')
 
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
